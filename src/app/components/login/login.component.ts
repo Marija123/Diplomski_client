@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TokenPayload, AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import {  AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { Router } from '@angular/router';
+import { TokenPayload } from 'src/app/model/tokenPayload';
 
 @Component({
   selector: 'app-login',
