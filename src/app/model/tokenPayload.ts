@@ -8,5 +8,6 @@ export interface TokenPayload {
   image?: string;
   activated?: string;
   role?: string;
+  passengerType?: string;
   
 }

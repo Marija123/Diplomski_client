@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TokenPayload } from 'src/app/model/tokenPayload';
 import { Validators, FormBuilder } from '@angular/forms';
 import { ConfirmPasswordValidator } from 'src/app/model/validation/password-validator';
+import { AccountService } from 'src/app/services/account/account.service';
 
 @Component({
   selector: 'app-register',
@@ -11,6 +12,8 @@ import { ConfirmPasswordValidator } from 'src/app/model/validation/password-vali
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+
+  types: any = [];
 
   registerForm = this.fb.group({
    
@@ -28,13 +31,13 @@ export class RegisterComponent implements OnInit {
       Validators.required],
     Address: ['',
       Validators.required],
-    Birthday: ['', Validators.required]
-    //  PassengerType: ['Regular', Validators.required]
+    Birthday: ['', Validators.required],
+    PassengerType: ['Regular', Validators.required]
   },
   { validators: ConfirmPasswordValidator }
    );
    selectedImage: any = null;
-   types:any = [];
+   
 
 
   onFileSelected(event){
@@ -57,9 +60,25 @@ export class RegisterComponent implements OnInit {
     birthday: new Date(),
     image: '',
     activated: '',
-    role: 'AppUser'
+    role: 'AppUser',
+    passengerType: ''
   };
-  constructor(private auth: AuthenticationService, private router: Router, private fb: FormBuilder ) { }
+
+  
+  constructor(private auth: AuthenticationService, private router: Router, private fb: FormBuilder, private accountService: AccountService )
+  {
+    console.log("wwtfff")
+    this.accountService.getPassengerTypes().subscribe(data => {
+      this.types = data;
+      console.log("usloooo");
+      console.log(data);
+      console.log(this.types);
+
+    },
+    err => {
+      console.log(err);
+    });
+  }
 
   ngOnInit() {
   }
@@ -79,14 +98,18 @@ export class RegisterComponent implements OnInit {
     this.credentials.password = this.registerForm.value.Password;
     this.credentials.address = this.registerForm.value.Address;
     this.credentials.birthday = this.registerForm.value.Birthday;
+    this.credentials.passengerType = this.registerForm.value.PassengerType;
 
     if (this.selectedImage == undefined || this.selectedImage == null){
       this.credentials.activated  = "NOT ACTIVATED";
+      console.log("korisnik kog saljem: ", this.credentials);
+     
       this.register();
    
     }
     else{
       this.credentials.activated  = "PENDING";
+      console.log("korisnik kog saljem: ", this.credentials);
       this.register();
       // this.fileUploadService.uploadFile(this.selectedImage)
       //    .subscribe(data => { 
