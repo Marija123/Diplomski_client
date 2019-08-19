@@ -60,6 +60,7 @@ export class AuthenticationService {
   }
 
   public getUserDetails(): UserDetails {
+    
     const token = this.getToken();
     let payload;
     if (token) {
@@ -72,6 +73,7 @@ export class AuthenticationService {
   }
 
   public isLoggedIn(): boolean {
+    
     const user = this.getUserDetails();
     if (user) {
       return user.exp > Date.now() / 1000;
@@ -92,7 +94,11 @@ export class AuthenticationService {
     const request = base.pipe(
       map((data: TokenResponse) => {
         if (data.token) {
-          this.saveToken(data.token);
+          if( type === 'login')
+          {
+            this.saveToken(data.token);
+          }
+          
         }
         return data;
       })
@@ -116,6 +122,9 @@ export class AuthenticationService {
   public logout(): void {
     this.token = '';
     window.localStorage.removeItem('mean-token');
+    // localStorage.removeItem('jwt');
+    localStorage.removeItem('role');
+    localStorage.removeItem('name');
     this.router.navigateByUrl('/');
   }
 }

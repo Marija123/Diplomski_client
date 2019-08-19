@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
 
     <div class="row">
       
@@ -23,4 +23,32 @@
     </div>
   
   </div>
+   -->
+
+  <div class="container" style=" width: 700px; text-align: center;">
+    <br/>
+    <br/>
+    <form #loginForm="ngForm" (ngSubmit)="onSignIn(loginForm.value, loginForm)">
+        <fieldset class="ff">
+            <legend style="font-family: 'Gill Sans'; color: #5bd6cc; font-size: 40px; width:auto"> |  Sign In  | </legend>
+      <br/>
+        <div class="form-group">
+          <!-- <label for="email">Email address</label> -->
+          <input required type="email" class="form-control" name="Email" placeholder="Email" ngModel>
+          <!-- <div *ngIf="!validations.emailOk" style="color:red">Email can't be empty.</div> -->
   
+        </div>
+  
+       <br/>
+        <div class="form-group">
+          <!-- <label for="password">Password</label> -->
+          <input required type="password" class="form-control" name="Password" placeholder="Password" ngModel>
+          <!-- <div *ngIf="!validations.passwordOk" style="color:red">Password can't be empty.</div> -->
+  
+        </div>
+  
+      
+        <button  type="submit" class="btn btn-primary btn-lg">Sign In</button>
+      </fieldset>
+      </form>
+  </div>

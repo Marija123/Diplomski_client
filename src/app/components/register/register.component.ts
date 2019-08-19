@@ -67,12 +67,11 @@ export class RegisterComponent implements OnInit {
   
   constructor(private auth: AuthenticationService, private router: Router, private fb: FormBuilder, private accountService: AccountService )
   {
-    console.log("wwtfff")
+    
     this.accountService.getPassengerTypes().subscribe(data => {
       this.types = data;
-      console.log("usloooo");
-      console.log(data);
-      console.log(this.types);
+      
+      console.log("Tipovi putnika: ", this.types);
 
     },
     err => {
@@ -85,7 +84,7 @@ export class RegisterComponent implements OnInit {
 
   register() {
     this.auth.register(this.credentials).subscribe(() => {
-      this.router.navigateByUrl('/profile');
+      this.router.navigateByUrl('/login');
     }, (err) => {
       console.error(err);
     });
@@ -99,6 +98,7 @@ export class RegisterComponent implements OnInit {
     this.credentials.address = this.registerForm.value.Address;
     this.credentials.birthday = this.registerForm.value.Birthday;
     this.credentials.passengerType = this.registerForm.value.PassengerType;
+    this.credentials.role = "AppUser"
 
     if (this.selectedImage == undefined || this.selectedImage == null){
       this.credentials.activated  = "NOT ACTIVATED";

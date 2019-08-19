@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,7 +14,7 @@ import { MenubarComponent } from './components/menubar/menubar.component';
 import { TimetableComponent } from './components/timetable/timetable.component';
 import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
 import { AddChangeLinesComponent } from './components/add-change/add-change-lines/add-change-lines.component';
-import { AddChangePricelinesComponent } from './components/add-change/add-change-pricelines/add-change-pricelines.component';
+
 import { AddChangeStationsComponent } from './components/add-change/add-change-stations/add-change-stations.component';
 import { AddChangeVehicleComponent } from './components/add-change/add-change-vehicle/add-change-vehicle.component';
 import { AddChangeTimetableComponent } from './components/add-change/add-change-timetable/add-change-timetable.component';
@@ -26,6 +26,14 @@ import { PricelistComponent } from './components/pricelist/pricelist.component';
 import { RegAdminContComponent } from './components/register/reg-admin-cont/reg-admin-cont.component';
 import { ShowTicketsComponent } from './components/show-tickets/show-tickets.component';
 import { TicketValidationComponent } from './components/ticket-validation/ticket-validation.component';
+import { UserNotSignedInGuard } from './guard/notSignedIn-guard';
+import { UserSignedInGuard } from './guard/userSignedIn-guar';
+import { CanActivateViaAuthGuard } from './guard/auth-guard';
+import { CanActivateUser } from './guard/user-guard';
+import { CanActivateNotification } from './guard/notification-guard';
+import { ControlorGuard } from './guard/controler-guard';
+import { AddChangePricelistComponent } from './components/add-change/add-change-pricelist/add-change-pricelist.component';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 //gard
 
@@ -40,18 +48,98 @@ const routes: Routes = [
   },
   {
     path:'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate:[UserNotSignedInGuard]
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
+    canActivate:[UserNotSignedInGuard]
   },
   {
     path: 'profile',
-    component: ProfileComponent
+    component: ProfileComponent,
+    canActivate: [UserSignedInGuard],
+    //runGuardsAndResolvers: 'always',
+    children: [
+      {
+        path:'edit',
+        component: EditProfileComponent,
+        canActivate: [UserSignedInGuard]
+      }],
+  },
+  {
+    path: "timetable",
+    component: TimetableComponent
+  },
+  {
+    path: "busmaps",
+    component: BusmapsComponent
+  },
+  {
+    path: "getLocation",
+    component: BusLocationComponent
+  },
+  {
+    path: "pricelist",
+    component: PricelistComponent
+  },
+ 
+ 
+  {
+    path: "regAdminController",
+    component: RegAdminContComponent,
+    canActivate:[UserNotSignedInGuard]
+    
+  },
+  
+ 
+  {
+    path: "add_change_lines",
+    component: AddChangeLinesComponent,
+    canActivate: [CanActivateViaAuthGuard]
+  },
+  {
+    path: "add_change_stations",
+    component: AddChangeStationsComponent,
+    canActivate: [CanActivateViaAuthGuard]
+  },
+  {
+    path: "add_change_timetable",
+    component: AddChangeTimetableComponent,
+    canActivate: [CanActivateViaAuthGuard]
+  },
+  {
+    path: "add_change_pricelist",
+    component: AddChangePricelistComponent ,
+    canActivate: [CanActivateViaAuthGuard]
+  },
+  {
+    path: "buy_a_ticket",
+    component: BuyATicketComponent,
+    canActivate: [CanActivateUser]
+  },
+  {
+    path: "notifications",
+    component: NotificationsComponent,
+    canActivate: [CanActivateNotification]
+  },
+  {
+    path: "validateTicket",
+    component: TicketValidationComponent,
+    canActivate: [ControlorGuard]
+  },
+  {
+    path: "add_change_vehicle",
+    component: AddChangeVehicleComponent,
+    canActivate: [CanActivateViaAuthGuard]
+  },
+  {
+    path: "show_tickets",
+    component: ShowTicketsComponent,
+    canActivate: [UserSignedInGuard]
   }
 ];
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,9 +151,9 @@ const routes: Routes = [
     TimetableComponent,
     EditProfileComponent,
     AddChangeLinesComponent,
-    AddChangePricelinesComponent,
     AddChangeStationsComponent,
     AddChangeVehicleComponent,
+    AddChangePricelistComponent,
     AddChangeTimetableComponent,
     BusmapsComponent,
     BusLocationComponent,
@@ -84,7 +172,15 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes),
   ],
-  providers: [],
+  providers: [ CanActivateViaAuthGuard,
+    CanActivateUser,
+    UserSignedInGuard,
+    CanActivateNotification,
+    UserNotSignedInGuard,
+    ControlorGuard,{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
+   // {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+    
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

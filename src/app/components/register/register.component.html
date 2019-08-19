@@ -53,7 +53,7 @@
 
   <div class="container" style="width: 700px; text-align: center; ">
   
-    <!-- <label style="font-family: 'Gill Sans'; color:white">Do you want to register as admin or controller?</label><a [routerLink]="['/regAdminController']">Click here</a> -->
+    <label style="font-family: 'Gill Sans'; color:white">Do you want to register as admin or controller?</label><a [routerLink]="['/regAdminController']">Click here</a>
   
     <form [formGroup]="registerForm" (ngSubmit)="Button()">
       <br/>
@@ -137,9 +137,9 @@
             </div>
         </div>
   
-        <!-- <div *ngIf="registerForm.get('PassengerType').value != 'Regular'" class="form-group" > -->
+        <div *ngIf="registerForm.get('PassengerType').value != 'Regular'" class="form-group" >
           <input  type="file" (change)="onFileSelected($event)" style="background-color: transparent; color:#5bd6cc; border:2px solid #5bd6cc" >  
-        <!-- </div> -->
+        </div>
   
         <!-- <div *ngIf="registerForm.get('PassengerType').value != 'Regular'" class="file-field form-group">
             <a class="btn-floating peach-gradient mt-0 float-left">

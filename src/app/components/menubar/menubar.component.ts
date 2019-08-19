@@ -15,23 +15,24 @@ export class MenubarComponent implements OnInit {
 
   ngOnInit() {
   }
-  loggedIn():string{
-    if(localStorage.jwt){
+  // loggedIn():string{
+  //   if(localStorage.jwt){
    
     
-  }
-    return localStorage.jwt;
-  }
+  // }
+  //   return localStorage.jwt;
+  // }
 
   logout() {
     this.auth.logout();
     this.prom = "";
+    
     this.router.navigate(["login"]);
-    
-    
   }
   get user(): any {
     return localStorage.getItem('role');
   }
+
+  
   
 }
