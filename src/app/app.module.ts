@@ -35,6 +35,15 @@ import { ControlorGuard } from './guard/controler-guard';
 import { AddChangePricelistComponent } from './components/add-change/add-change-pricelist/add-change-pricelist.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 
+import {
+  ToastrModule,
+  ToastNoAnimation,
+  ToastNoAnimationModule,
+} from 'ngx-toastr';
+import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
+
+
 //gard
 
 const routes: Routes = [
@@ -171,6 +180,12 @@ const routes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
+    AgmDirectionModule,
+    AgmCoreModule.forRoot({apiKey: 'AIzaSyDnihJyw_34z5S1KZXp90pfTGAqhFszNJk'}),
+    ToastNoAnimationModule,
+    ToastrModule.forRoot({
+      toastComponent: ToastNoAnimation,
+    })
   ],
   providers: [ CanActivateViaAuthGuard,
     CanActivateUser,

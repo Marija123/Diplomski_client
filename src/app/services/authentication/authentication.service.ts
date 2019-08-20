@@ -43,7 +43,7 @@ interface TokenResponse {
 })
 export class AuthenticationService {
 
-  private token: string;
+  private token: string;      
 
   constructor(private http: HttpClient, private router: Router) {}
 
