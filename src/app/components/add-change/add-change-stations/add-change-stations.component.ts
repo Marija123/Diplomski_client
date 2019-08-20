@@ -23,17 +23,17 @@ export class AddChangeStationsComponent implements OnInit {
   address: string;
   stati: any = [];
   id: number;
-  version: number;
+ // version: number;
   public allStations: any = [];
   iconPath : any = { url:"assets/busicon.png", scaledSize: {width: 50, height: 50}}
  // validations : AddStationValidation = new AddStationValidation();
 
   constructor(private ngZone: NgZone, private mapsApiLoader : MapsAPILoader, private statServ: StationService) { 
-    // this.statServ.getAllStations().subscribe(data => {
-    // this.stati = data;
-    // this.setradio("Add");
-    // });
+    this.statServ.getAllStations().subscribe(data => {
+    this.stati = data;
+    console.log(this.stati);
     this.setradio("Add");
+    });
   }
 
   ngOnInit() {
@@ -78,20 +78,20 @@ export class AddChangeStationsComponent implements OnInit {
         stationData.Name = this.name;
       }
       stationData.Id = this.id;
-      stationData.Version = this.version;
+      ///stationData.Version = this.version;
      
       console.log("stationData")
       console.log(stationData)
-      // this.statServ.changeStation(stationData).subscribe(data =>
-      //   {
-      //     window.alert("Station successfully changed!");
-      //     form.reset();
-      //     this.refresh();
-      //   },
-      //   err => {
-      //     window.alert(err.error);
-      //     this.refresh();
-      //   });
+      this.statServ.changeStation(stationData).subscribe(data =>
+        {
+          window.alert("Station successfully changed!");
+          form.reset();
+          this.refresh();
+        },
+        err => {
+          window.alert(err.error);
+          this.refresh();
+        });
     }
   
   }
@@ -102,15 +102,16 @@ export class AddChangeStationsComponent implements OnInit {
     {
       this.id = 0;
     }
-    // this.statServ.deleteStation(this.id).subscribe(data =>
-    //   {
-    //     window.alert("Station successfully removed!");
-    //     this.refresh();
-    //   },
-    //   err => {
-    //     window.alert(err.error);
-    //     this.refresh();
-    //   });
+    
+    this.statServ.deleteStation(this.id.toString()).subscribe(data =>
+      {
+        window.alert("Station successfully removed!");
+        this.refresh();
+      },
+      err => {
+        window.alert(err.error);
+        this.refresh();
+      });
     
   }
 
@@ -120,9 +121,9 @@ export class AddChangeStationsComponent implements OnInit {
     this.stati = [];
     this.name = "";
     this.address = "";
-    // this.statServ.getAllStations().subscribe(data => {
-    //   this.stati = data;
-    // });     
+    this.statServ.getAllStations().subscribe(data => {
+      this.stati = data;
+    });     
   }  
 
   isSelected(name: string): boolean   
@@ -153,13 +154,13 @@ export class AddChangeStationsComponent implements OnInit {
     
   }
 
-  markerDragEnd($event: MouseEvent, name:string, id: number, version: number) {
+  markerDragEnd($event: MouseEvent, name:string, id: number) {
     this.coordinates.latitude = $event.coords.lat;
     this.coordinates.longitude = $event.coords.lng;
     this.getAddress(this.coordinates.latitude, this.coordinates.longitude);
     this.name = name;
     this.id = id;
-    this.version = version;
+    //this.version = version;
     console.log(id);
   }
 
@@ -173,9 +174,9 @@ export class AddChangeStationsComponent implements OnInit {
     this.name = "";
     
     this.coordinates = new GeoLocation(0,0); 
-    // this.statServ.getAllStations().subscribe(data => {
-    //   this.stati = data;
-    // });
+    this.statServ.getAllStations().subscribe(data => {
+      this.stati = data;
+    });
   }
 
 }

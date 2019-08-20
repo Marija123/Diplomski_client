@@ -67,17 +67,17 @@
       <label *ngIf="isSelected('Change')" style="color: yellow">*Move marker you want to change!</label><br/>
 <div style="margin-left:10px">
   <agm-map [latitude]="markerInfo.location.latitude" [longitude]="markerInfo.location.longitude" [zoom]="18" (mapClick)="placeMarker1($event)">  
-    <agm-marker  *ngFor="let stat of stati" [latitude]="stat.Latitude" [longitude]="stat.Longitude" [title]="stat.Name" [label]="" [iconUrl]="iconPath"
+    <agm-marker  *ngFor="let stat of stati" [latitude]="stat.latitude" [longitude]="stat.longitude" [title]="stat.name" [label]="" [iconUrl]="iconPath"
     [markerDraggable]="isSelected('Change')"
-      (dragEnd)="markerDragEnd($event,stat.Name,stat.Id,stat.Version)"
-      (markerClick) = "stationClick(stat.Id)">
-      <agm-info-window [latitude]="stat.Latitude" [longitude]="stat.Longitude" >
+      (dragEnd)="markerDragEnd($event,stat.name,stat._id)"
+      (markerClick) = "stationClick(stat._id)">
+      <agm-info-window [latitude]="stat.latitude" [longitude]="stat.longitude" >
 
      
-        <span style="font-size: 16px;font-family:'Times New Roman'">{{stat.Name}}</span>
+        <span style="font-size: 16px;font-family:'Times New Roman'">{{stat.name}}</span>
         <br/>
         
-        <span style="font-family:'Times New Roman'; color:gray;">{{stat.Address}}</span>
+        <span style="font-family:'Times New Roman'; color:gray;">{{stat.address}}</span>
         
       </agm-info-window>
     
