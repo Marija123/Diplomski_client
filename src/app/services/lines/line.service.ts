@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
-//import { Http } from '@angular/http';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { StationModel } from 'src/app/model/stationModel';
+import { Observable } from 'rxjs';
+import { LineModel } from 'src/app/model/lineModel';
 
-//private http: Http,
 interface TokenResponse {
   token: string;
 }
@@ -14,8 +11,7 @@ interface TokenResponse {
 @Injectable({
   providedIn: 'root'
 })
-export class StationService {
-  //base_url = "http://localhost:52295"
+export class LineService {
   private token: string;
   constructor( private httpClient:HttpClient, private router: Router) { }
 
@@ -26,11 +22,17 @@ export class StationService {
     return this.token;
   }
 
-  private request(method: 'post'|'get'|'delete', type: 'addStation'|'getAllStations'|'changeStation'|'removeStation', user?: StationModel, stId?: String): Observable<any> {
+  private request(method: 'post'|'get'|'delete', type: 'addLine'|'getAllLines'|'changeLine'|'removeLine', user?: LineModel, stId?: String): Observable<any> {
     let base;
 
     if (method === 'post') {
       base = this.httpClient.post(`/api/${type}`, user);
+
+      if(type === 'changeLine')
+      {
+        base = this.httpClient.post(`/api/${type}/` + stId, user);
+      }
+
     } else if(method === 'get') {
       base = this.httpClient.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
     }
@@ -53,22 +55,21 @@ export class StationService {
 
     return base;
   }
-  public getAllStations(): Observable<any> {
-    return this.request('get', 'getAllStations');
+  public getAllLines(): Observable<any> {
+    return this.request('get', 'getAllLines');
   }
 
-  public addStation(stat: StationModel): Observable<any> {
-    return this.request('post', 'addStation', stat);
+  public addLine(stat: LineModel): Observable<any> {
+    return this.request('post', 'addLine', stat);
   }
 
-  public changeStation(stat: StationModel) : Observable<any>{
-    return this.request('post', 'changeStation', stat);
+  public changeLine(stat: LineModel,stId: String) : Observable<any>{
+    return this.request('post', 'changeLine', stat, stId);
   }
 
-  public deleteStation(stId: String) : Observable<any>{
-    return this.request('delete', 'removeStation',null ,stId);   
+  public deleteLine(stId: String) : Observable<any>{
+    return this.request('delete', 'removeLine',null ,stId);   
   }
 
-  
 
 }
