@@ -40,7 +40,7 @@ export class AddChangePricelistComponent implements OnInit {
           this.refresh();
         },
         err => {
-          window.alert(err.error);
+          window.alert(err.error.message);
           this.refresh();
         });
   
@@ -76,37 +76,46 @@ export class AddChangePricelistComponent implements OnInit {
         if(this.priceList)
         {
           console.log(data);
-          let d : Date = new Date(this.priceList.StartOfValidity);
+          let d : Date = new Date(this.priceList.startOfValidity);
           this.pocDatum = d.getDate().toString()+ "." + (d.getMonth() + 1).toString() + "." + d.getFullYear().toString() + ".";
-          let e: Date = new Date(this.priceList.EndOfValidity);
+          let e: Date = new Date(this.priceList.endOfValidity);
           this.endDatum = e.getDate().toString() + "." + (e.getMonth() + 1).toString() + "." + e.getFullYear().toString() + ".";
           this.validPrices = new TicketPricesPomModel(0,0,0,0,0,new PriceListModel(null,null,0, []))
         }
-         
-         if(this.priceList){
-         this.priceList.TicketPricess.forEach(element => {
-          if(element.TicketTypeId == 2)
-          {
-            this.validPrices.Daily = element.Price;
-          }
-          if(element.TicketTypeId == 1)
-          {
-            this.validPrices.Hourly = element.Price;
-          }
-          if(element.TicketTypeId == 3)
-          {
-            this.validPrices.Monthly = element.Price;
-          }
-          if(element.TicketTypeId == 4)
-          {
-            this.validPrices.Yearly = element.Price;
-          }
+          this.pricelistServ.getTicketPrices(this.priceList._id).subscribe(tp => {
+          this.validPrices.Hourly = tp[0].price;
+          this.validPrices.Daily = tp[1].price;
+          this.validPrices.Monthly= tp[2].price;
+          this.validPrices.Yearly = tp[3].price;
+         });
+        //  if(this.priceList){
+        //   this.validPrices.Hourly = tp[0].price;
+        //   this.validPrices.Daily = tp[1].price;
+        //   this.validPrices.Monthly= tp[2].price;
+        //   this.validPrices.Yearly = tp[3].price;
+        //  tp.forEach(element => {
+        //   if(element.ticketType == "")
+        //   {
+        //     this.validPrices.Daily = element.Price;
+        //   }
+        //   if(element.TicketTypeId == 1)
+        //   {
+        //     this.validPrices.Hourly = element.Price;
+        //   }
+        //   if(element.TicketTypeId == 3)
+        //   {
+        //     this.validPrices.Monthly = element.Price;
+        //   }
+        //   if(element.TicketTypeId == 4)
+        //   {
+        //     this.validPrices.Yearly = element.Price;
+        //   }
           
-        });
-      }
-      else {
-        this.validPrices = new TicketPricesPomModel(0,0,0,0,0,new PriceListModel(null,null,0, []));
-      }
+        //});
+      //}
+      // else {
+      //   this.validPrices = new TicketPricesPomModel(0,0,0,0,0,new PriceListModel(null,null,0, []));
+      // }
   
        });
     }

@@ -22,13 +22,18 @@ export class PricelistService {
   }
 
 
-  private request(method: 'post'|'get', type: 'addPricelist'|'getPricelist', user?: TicketPricesPomModel): Observable<any> {
+  private request(method: 'post'|'get', type: 'addPricelist'|'getPricelist' | 'getTicketPrices', user?: TicketPricesPomModel, param?:any): Observable<any> {
     let base;
 
     if (method === 'post') {
       base = this.httpClient.post(`/api/${type}`, user);
     } else if(method === 'get') {
-      base = this.httpClient.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
+      if(type === 'getTicketPrices'){
+        base = this.httpClient.get(`/api/${type}`,  { headers: { Authorization: `Bearer ${this.getToken()}` }, params: {parami : param}});
+      }else{
+        base = this.httpClient.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
+      }
+     
     }
     // else {
     //   base= this.httpClient.delete(`/api/${type}/`+ stId);
@@ -55,6 +60,10 @@ export class PricelistService {
 
   public addPricelist(vehic: TicketPricesPomModel): Observable<any> {
     return this.request('post', 'addPricelist', vehic);
+  }
+
+  public getTicketPrices(parametar : any) : Observable<any>{
+    return this.request('get','getTicketPrices',null, parametar);
   }
 
   // public getAllAvailableVehicles() : Observable<any>{

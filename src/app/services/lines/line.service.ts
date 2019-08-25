@@ -22,7 +22,7 @@ export class LineService {
     return this.token;
   }
 
-  private request(method: 'post'|'get'|'delete', type: 'addLine'|'getAllLines'|'changeLine'|'removeLine', user?: LineModel, stId?: String): Observable<any> {
+  private request(method: 'post'|'get'|'delete', type: 'addLine'|'getAllLines'|'changeLine'|'removeLine'|'FindVehicleId', user?: LineModel, stId?: any): Observable<any> {
     let base;
 
     if (method === 'post') {
@@ -34,7 +34,14 @@ export class LineService {
       }
 
     } else if(method === 'get') {
-      base = this.httpClient.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
+      if(type === 'FindVehicleId')
+      {
+        base = this.httpClient.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }, params: {parami : stId}});
+      }
+      else {
+        base = this.httpClient.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
+      }
+      
     }
     else {
       base= this.httpClient.delete(`/api/${type}/`+ stId);
@@ -57,6 +64,10 @@ export class LineService {
   }
   public getAllLines(): Observable<any> {
     return this.request('get', 'getAllLines');
+  }
+
+  public FindVehicleId(vId: any): Observable<any> {
+    return this.request('get', 'FindVehicleId',null, vId);
   }
 
   public addLine(stat: LineModel): Observable<any> {
