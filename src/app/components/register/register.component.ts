@@ -14,6 +14,7 @@ import { AccountService } from 'src/app/services/account/account.service';
 export class RegisterComponent implements OnInit {
 
   types: any = [];
+  formd: FormData = new FormData();
 
   registerForm = this.fb.group({
    
@@ -41,7 +42,7 @@ export class RegisterComponent implements OnInit {
 
 
   onFileSelected(event){
-    this.selectedImage = event.target.files;
+    this.selectedImage = event.target.files[0];
      
   }
 
@@ -51,18 +52,19 @@ export class RegisterComponent implements OnInit {
   }
 
 
-  credentials: TokenPayload = {
-    email: '',
-    name: '',
-    password: '',
-    surname: '',
-    address: '',
-    birthday: new Date(),
-    image: '',
-    activated: '',
-    role: 'AppUser',
-    passengerType: ''
-  };
+  // credentials: TokenPayload = {
+  //   email: '',
+  //   name: '',
+  //   password: '',
+  //   surname: '',
+  //   address: '',
+  //   birthday: new Date(),
+  //   image: '',
+  //   activated: '',
+  //   role: 'AppUser',
+  //   passengerType: '',
+  //   img: null
+  // };
 
   
   constructor(private auth: AuthenticationService, private router: Router, private fb: FormBuilder, private accountService: AccountService )
@@ -82,63 +84,41 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
-  register() {
-    this.auth.register(this.credentials).subscribe(() => {
+  register(foo : FormData) {
+    this.auth.register(foo).subscribe(() => {
       this.router.navigateByUrl('/login');
     }, (err) => {
       console.error(err);
     });
   }
 
+
+
   Button() {
-    this.credentials.name = this.registerForm.value.Name;
-    this.credentials.surname = this.registerForm.value.Surname;
-    this.credentials.email = this.registerForm.value.Email;
-    this.credentials.password = this.registerForm.value.Password;
-    this.credentials.address = this.registerForm.value.Address;
-    this.credentials.birthday = this.registerForm.value.Birthday;
-    this.credentials.passengerType = this.registerForm.value.PassengerType;
-    this.credentials.role = "AppUser"
+
+    this.formd = new FormData();
+      this.formd.append("name", this.registerForm.value.Name);
+      this.formd.append("surname",this.registerForm.value.Surname);
+      this.formd.append('address',  this.registerForm.value.Address);
+      this.formd.append('email', this.registerForm.value.Email);
+      this.formd.append('role', "AppUser");
+      this.formd.append('birthday', this.registerForm.value.Birthday);
+      this.formd.append('password', this.registerForm.value.Password);
+      this.formd.append('passengerType', this.registerForm.value.PassengerType);
+
+   
 
     if (this.selectedImage == undefined || this.selectedImage == null){
-      this.credentials.activated  = "NOT ACTIVATED";
-      console.log("korisnik kog saljem: ", this.credentials);
+      this.formd.append('activated',  "NOT ACTIVATED");
      
-      this.register();
+      this.register(this.formd);
    
     }
     else{
-      this.credentials.activated  = "PENDING";
-      console.log("korisnik kog saljem: ", this.credentials);
-      this.register();
-      // this.fileUploadService.uploadFile(this.selectedImage)
-      //    .subscribe(data => { 
-      //     this.accountService.register(regModel).subscribe(
-      //       ret => {
-      //         this.serverErrors = [];
-      //         console.log("ret", ret);
-      //         if(ret == "sve je ok")
-      //         {
-      //           this.notificationServ.sendNotificationToController();
-      //           this.router.navigateByUrl('/signin');
-      //         }
-      //         else
-      //         {
-      //           console.log("nesto nece d posalje notifikaciju");
-      //           this.router.navigateByUrl('/signin');
-      //         }
-                
-      //       },
-      //       err => {
-      //         console.log(err);
-      //         window.alert(err.error.ModelState[""]);
-      //         this.serverErrors = err.error.ModelState[""]
-      //       }
-      //     );
-      //    },
-      //    err => {
-      //     window.alert(err.error);
-      //    });
+      this.formd.append('file',this.selectedImage, this.selectedImage.name);
+      this.formd.append('activated', "PENDING");
+   
+      this.register(this.formd);
 
     }
   }

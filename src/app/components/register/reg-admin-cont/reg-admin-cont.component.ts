@@ -69,8 +69,8 @@ export class RegAdminContComponent implements OnInit {
   }
 
 
-  register() {
-    this.accountService.register(this.credentials).subscribe(() => {
+  register(foo: FormData) {
+    this.accountService.register(foo).subscribe(() => {
       this.router.navigateByUrl('/login');
     }, (err) => {
       console.error(err);
@@ -81,19 +81,32 @@ export class RegAdminContComponent implements OnInit {
     let regModel: RegModel = this.registerForm.value;
     let formData: FormData = new FormData();
 
+    let fd = new FormData();
+     
+    fd.append('name', this.registerForm.value.Name);
+    fd.append('surname',this.registerForm.value.Surname);
+    fd.append('address',  this.registerForm.value.Address);
+    fd.append('email', this.registerForm.value.Email);
+    fd.append('role',this.registerForm.value.Role);
+    fd.append('birthday', this.registerForm.value.Birthday);
+    fd.append('password', this.registerForm.value.Password);
+    fd.append('activated', "PENDING");
 
-    this.credentials.name = this.registerForm.value.Name;
-    this.credentials.surname = this.registerForm.value.Surname;
-    this.credentials.email = this.registerForm.value.Email;
-    this.credentials.password = this.registerForm.value.Password;
-    this.credentials.address = this.registerForm.value.Address;
-    this.credentials.birthday = this.registerForm.value.Birthday;
-    this.credentials.role = this.registerForm.value.Role;
 
 
-    regModel.Activated  = "PENDING";
+
+    // this.credentials.name = this.registerForm.value.Name;
+    // this.credentials.surname = this.registerForm.value.Surname;
+    // this.credentials.email = this.registerForm.value.Email;
+    // this.credentials.password = this.registerForm.value.Password;
+    // this.credentials.address = this.registerForm.value.Address;
+    // this.credentials.birthday = this.registerForm.value.Birthday;
+    // this.credentials.role = this.registerForm.value.Role;
+
+
+    // regModel.Activated  = "PENDING";
    
-    this.register();
+    this.register(fd);
 
    
     // this.accountService.register(regModel).subscribe(

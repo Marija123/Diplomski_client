@@ -19,6 +19,7 @@ export interface UserDetails {
   role: string;
   exp: number;
   iat: number;
+
 }
 
 interface TokenResponse {
@@ -83,13 +84,15 @@ export class AuthenticationService {
     }
   }
 
-  private request(method: 'post'|'get', type: 'login'|'register'|'profile' | 'edit', user?: TokenPayload, us? : RegModel): Observable<any> {
+  private request(method: 'post'|'get', type: 'login'|'register'|'profile' | 'edit' | 'editPassword', user?: FormData ): Observable<any> {
     let base;
 
     if (method === 'post') {
-      base = this.http.post(`/api/${type}`, user);
+      
+        base = this.http.post(`/api/${type}`, user );
+      
       if(type ==='edit'){
-        base = this.http.post(`/api/${type}`, us);
+        base = this.http.post(`/api/${type}`, user);
       }
     } else {
       base = this.http.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
@@ -110,16 +113,19 @@ export class AuthenticationService {
 
     return request;
   }
+public editPassword(userr: FormData): Observable<any>{
+  return this.request('post', 'editPassword', userr);
+}
 
-  public edit(userr: RegModel) : Observable<any>{
-    return this.request('post', 'edit',null, userr);
+  public edit(userr: FormData) : Observable<any>{
+    return this.request('post', 'edit', userr);
   }
 
-  public register(user: TokenPayload): Observable<any> {
+  public register(user: FormData): Observable<any> {
     return this.request('post', 'register', user);
   }
 
-  public login(user: TokenPayload): Observable<any> {
+  public login(user: FormData): Observable<any> {
     return this.request('post', 'login', user);
   }
 

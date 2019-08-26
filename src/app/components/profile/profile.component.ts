@@ -85,28 +85,28 @@ export class ProfileComponent implements OnInit,OnDestroy {
            this.birt = this.birt+ mesec.toString() + ".";
            this.birt= this.birt + d.getFullYear().toString() + "." ;
  
-          this.user.activated = "NOT_ACTIVATED"
-          //  if(localStorage.getItem('role') == 'AppUser')
-          //  {
+          //this.user.activated = "NOT_ACTIVATED"
+           if(localStorage.getItem('role') == 'AppUser')
+           {
              
-          //    this.nijeUser = false;
-          //    if(this.user.PassengerTypeId == 3)
-          //    {
-          //      this.nijeUser = true;
-          //    }
-          //  }
-          //  else{
-          //    this.nijeUser = true;
-          //  }
-          //  if(this.user.Activated == "DECLINED")  
-          //  {
-          //    this.accBool = true;
-          //  } 
-          //  else
-          //  {
-          //    this.accBool = false;
-          //  } 
-          //  console.log(this.user);    
+             this.nijeUser = false;
+             if(this.user.passengerType == 3)
+             {
+               this.nijeUser = true;
+             }
+           }
+           else{
+             this.nijeUser = true;
+           }
+           if(this.user.activated == "DECLINED")  
+           {
+             this.accBool = true;
+           } 
+           else
+           {
+             this.accBool = false;
+           } 
+           console.log(this.user);    
          },
          err =>
          {

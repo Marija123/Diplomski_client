@@ -10,6 +10,7 @@ export class RegModel{
     Role: string;
     PassengerType: string;
     Activated: string;
+    
 
     constructor(id:string,email: string, name: string, surname: string, address:string, birthday: Date,password: string, confirmPassword: string, role: string,passagerType: string, ac: string){
         this.Id = id;

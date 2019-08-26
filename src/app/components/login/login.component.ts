@@ -20,20 +20,23 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  login() {
-    this.auth.login(this.credentials).subscribe(() => {
-      this.router.navigateByUrl('/profile');
-    }, (err) => {
-      console.error(err);
-    }); 
-  }
+  // login() {
+  //   this.auth.login(this.credentials).subscribe(() => {
+  //     this.router.navigateByUrl('/profile');
+  //   }, (err) => {
+  //     console.error(err);
+  //   }); 
+  // }
 
   onSignIn(loginData: RegModel, form:NgForm){
     //if(this.validations.validate(loginData)) return;
 
-    this.credentials.email = loginData.Email;
-    this.credentials.password = loginData.Password;
-    this.auth.login(this.credentials).subscribe(
+    let fd = new FormData();
+    fd.append('email', loginData.Email);
+    fd.append('password', loginData.Password);
+    // this.credentials.email = loginData.Email;
+    // this.credentials.password = loginData.Password;
+    this.auth.login(fd).subscribe(
       res => {
 
         this.auth.profile().subscribe(data => {
