@@ -109,7 +109,12 @@ export class RegisterComponent implements OnInit {
    
 
     if (this.selectedImage == undefined || this.selectedImage == null){
-      this.formd.append('activated',  "NOT ACTIVATED");
+      if(this.registerForm.value.PassengerType == "Regular"){
+        this.formd.append('activated', "ACTIVATED");
+      }else {
+        this.formd.append('activated',  "NOT ACTIVATED");
+      }
+     
      
       this.register(this.formd);
    

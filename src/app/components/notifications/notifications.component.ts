@@ -148,7 +148,7 @@ export class NotificationsComponent implements OnInit {
    let fd = new FormData();
     fd.append('id', id);
     this.verifyService.declineUser(fd).subscribe(resp => {
-      if(resp == "Ok")  {
+      if(resp.message == "Ok")  {
         alert("Client has been declined!"); 
         this.awaitingClients.splice(i,1);
         this.wtfList.splice(i,1);

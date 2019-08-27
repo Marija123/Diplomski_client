@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserDetails, AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { AccountService } from 'src/app/services/account/account.service';
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +19,7 @@ export class ProfileComponent implements OnInit,OnDestroy {
   birt: string = "";
   navigationSubscription;
   public static returned: Subject<any> = new Subject();
-  constructor(private auth: AuthenticationService,  private router: Router, private route: ActivatedRoute) {
+  constructor(private auth: AuthenticationService,  private router: Router, private route: ActivatedRoute, public acc : AccountService) {
     ProfileComponent.returned.subscribe(res => {
       this.otvorenEdit = false;
       this.accBool = false;
@@ -85,15 +86,9 @@ export class ProfileComponent implements OnInit,OnDestroy {
            this.birt = this.birt+ mesec.toString() + ".";
            this.birt= this.birt + d.getFullYear().toString() + "." ;
  
-          //this.user.activated = "NOT_ACTIVATED"
            if(localStorage.getItem('role') == 'AppUser')
            {
-             
              this.nijeUser = false;
-             if(this.user.passengerType == 3)
-             {
-               this.nijeUser = true;
-             }
            }
            else{
              this.nijeUser = true;
@@ -126,13 +121,16 @@ export class ProfileComponent implements OnInit,OnDestroy {
 
   Resend(){
     let kor = localStorage.getItem('name');
-   // let m : ModelHelperAuthorization = new ModelHelperAuthorization("");
-   // m.Id = kor;
-    // this.usersService.resendReqest(m).subscribe(data =>
-    //   {
-    //     window.alert("Request successfully sent.");
-    //     this.requestUserInfo();
-    //   });
+   let fd = new FormData();
+   fd.append('email', kor);
+    this.acc.resendReqest(fd).subscribe(data =>
+      {
+        window.alert("Request successfully sent.");
+        this.requestUserInfo();
+      }, 
+      err => {
+        window.alert(err.error.message);
+      });
   }
 
   ngOnDestroy() {
