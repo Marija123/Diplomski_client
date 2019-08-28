@@ -17,21 +17,33 @@ export class TicketService {
     return this.token;
   }
 
-  private request(method: 'post'|'get', type: 'checkValidity'|'getAllTicketTypes'|'getTypeUser'| 'buyTicket', user?: FormData, stId?: String): Observable<any> {
+  private request(method: 'post'|'get', type: 'validateTicketNoUser'|'checkValidity'|'getAllTicketTypes'|'getTypeUser'| 'buyTicket'| 'getAllTicketsForOneUser' | 'getPrice'| 'getTicket' | 'validateTicket', user?: FormData, stId?: any, noviPar?: any): Observable<any> {
     let base;
 
     if (method === 'post') {
-      base = this.httpClient.post(`/api/${type}`, user);
+      if(type === 'validateTicketNoUser')
+      {
+        base = this.httpClient.post(`/api/${type}`, stId);
+      }else if( type === 'validateTicket'){
+        base = this.httpClient.post(`/api/${type}/` + stId, noviPar);
+      
+      }else{
+        base = this.httpClient.post(`/api/${type}`, user);
+      }
+      
     } else if(method === 'get') {
-      if(type === 'getTypeUser')
+      if(type === 'getTypeUser' || type === 'getAllTicketsForOneUser' || type==='getTicket')
       {
         base = this.httpClient.get(`/api/${type}/`+ stId, { headers: { Authorization: `Bearer ${this.getToken()}` }});
-      }else {
-
       
+      }else if(type === "getPrice" ) {
+        base = this.httpClient.get(`/api/${type}`,{ headers: { Authorization: `Bearer ${this.getToken()}` }, params: {parami : stId, par:  noviPar}});
+      }
+      else{
+
       base = this.httpClient.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
+      }
     }
-  }
     else {
       base= this.httpClient.delete(`/api/${type}/`+ stId);
     }
@@ -63,19 +75,28 @@ export class TicketService {
 
   }
 
+  public validateTicket(param, aa):Observable<any> {
+    return this.request('post', 'validateTicket',null, param ,aa );
+
+  }
+
+  public getPrice(param, aa):Observable<any> {
+    return this.request('get', 'getPrice',null, param ,aa );
+
+  }
+
+  public getAllTicketsForOneUser(email: String): Observable<any> {
+    return this.request('get','getAllTicketsForOneUser',null, email)
+  }
+  public getTicket(email: any): Observable<any> {
+    return this.request('get','getTicket',null, email);
+  }
+
   public buyTicket(sve : FormData) : Observable<any> {
     return this.request('post', 'buyTicket', sve);
   }
-  // public addStation(stat: StationModel): Observable<any> {
-  //   return this.request('post', 'addStation', stat);
-  // }
-
-  // public changeStation(stat: StationModel) : Observable<any>{
-  //   return this.request('post', 'changeStation', stat);
-  // }
-
-  // public deleteStation(stId: String) : Observable<any>{
-  //   return this.request('delete', 'removeStation',null ,stId);   
-  // }
+public validateTicketNoUser(tick :any)  : Observable<any> {
+  return this.request('post', 'validateTicketNoUser',null, tick);
+}
 
 }
