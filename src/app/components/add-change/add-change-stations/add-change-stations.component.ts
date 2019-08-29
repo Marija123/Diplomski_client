@@ -23,7 +23,7 @@ export class AddChangeStationsComponent implements OnInit {
   address: string;
   stati: any = [];
   id: number;
- // version: number;
+  version: number;
   public allStations: any = [];
   iconPath : any = { url:"assets/busicon.png", scaledSize: {width: 50, height: 50}}
  // validations : AddStationValidation = new AddStationValidation();
@@ -78,7 +78,7 @@ export class AddChangeStationsComponent implements OnInit {
         stationData.Name = this.name;
       }
       stationData.Id = this.id;
-      ///stationData.Version = this.version;
+      stationData.Version = this.version;
      
       console.log("stationData")
       console.log(stationData)
@@ -89,7 +89,7 @@ export class AddChangeStationsComponent implements OnInit {
           this.refresh();
         },
         err => {
-          window.alert(err.error);
+          window.alert(err.error.message);
           this.refresh();
         });
     }
@@ -154,13 +154,13 @@ export class AddChangeStationsComponent implements OnInit {
     
   }
 
-  markerDragEnd($event: MouseEvent, name:string, id: number) {
+  markerDragEnd($event: MouseEvent, name:string, id: number, version: number) {
     this.coordinates.latitude = $event.coords.lat;
     this.coordinates.longitude = $event.coords.lng;
     this.getAddress(this.coordinates.latitude, this.coordinates.longitude);
     this.name = name;
     this.id = id;
-    //this.version = version;
+    this.version = version;
     console.log(id);
   }
 
