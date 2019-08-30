@@ -109,7 +109,7 @@ export class AddChangeStationsComponent implements OnInit {
         this.refresh();
       },
       err => {
-        window.alert(err.error);
+        window.alert(err.error.message);
         this.refresh();
       });
     

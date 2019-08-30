@@ -33,7 +33,7 @@ import { TimetableService } from 'src/app/services/timetable/timetable.service';
     vehicleId: any;
     availableVehicles: any = [];
     chooseVehicle: boolean = false;
-    ttZaDodavanje : TimetableModel = new TimetableModel("", "", 0,"");
+    ttZaDodavanje : TimetableModel = new TimetableModel("", "", 0,"",0);
     daySelected : string = "0";
     lineSelected: string = "0";
     MyInput: Time;
@@ -237,7 +237,7 @@ import { TimetableService } from 'src/app/services/timetable/timetable.service';
     SplitDepartures(){
     
       this.stringovi1 = [];
-      this.ttZaDodavanje = new TimetableModel("","",0,"");
+      this.ttZaDodavanje = new TimetableModel("","",0,"",0);
       this.allTimetables.forEach(element => {
         if(element.line == this.lineIdChoosen && element.dayType == this.dt)
         {
@@ -246,6 +246,7 @@ import { TimetableService } from 'src/app/services/timetable/timetable.service';
           this.ttZaDodavanje.LineId = element.line;
           this.ttZaDodavanje.Vehicles = element.vehicle;
           this.ttZaDodavanje.Id = element._id;
+          this.ttZaDodavanje.Version = element.__v;
           //this.ttZaDodavanje = element;
         }
         
@@ -297,7 +298,7 @@ import { TimetableService } from 'src/app/services/timetable/timetable.service';
             this.refresh();
           },
           err => {
-            window.alert(err.error);
+            window.alert(err.error.message);
             this.refresh();
            
     
@@ -321,7 +322,7 @@ import { TimetableService } from 'src/app/services/timetable/timetable.service';
           this.refresh();
         },
         err => {
-          window.alert(err.error);
+          window.alert(err.error.message);
           this.refresh();
          
     
@@ -341,13 +342,13 @@ import { TimetableService } from 'src/app/services/timetable/timetable.service';
         this.refresh();
       },
       err => {
-        window.alert(err.error);
+        window.alert(err.error.message);
         this.refresh();
       });
     }
     
     refresh(){
-      this.ttZaDodavanje = new TimetableModel("","",0,"");
+      this.ttZaDodavanje = new TimetableModel("","",0,"",0);
       this.selectedDay = false;
             this.daySelected = "0";
             this.lineSelected = "0";
