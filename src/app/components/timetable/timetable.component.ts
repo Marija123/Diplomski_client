@@ -10,7 +10,6 @@ import { TimetableService } from 'src/app/services/timetable/timetable.service';
 export class TimetableComponent implements OnInit {
 
   allLines: any = [];
-  // allDayTypes: any = [];
    allTimetables: any = [];
    showList: any = [];
    dt: any;
@@ -43,9 +42,6 @@ export class TimetableComponent implements OnInit {
      });
  
      
-     
- 
-     
    }
  
  
@@ -67,8 +63,6 @@ export class TimetableComponent implements OnInit {
        this.GetLineIds();
      }
    }
- 
-   
  
    GetLineIds()
    {
@@ -111,10 +105,6 @@ export class TimetableComponent implements OnInit {
        else {
          this.allLines.forEach(element => {
            k = false;
-           // k = ll.find( g =>{
-           //   g.LineId == element.Id;
-           // });
-     
            ll.forEach(d => {
              if(d.line == element._id)
              {
@@ -132,17 +122,15 @@ export class TimetableComponent implements OnInit {
      }
    }
  
-   SelectedLine(event: any): void
- {
+  SelectedLine(event: any): void
+  {
    if(this.lineIdChoosen != event.target.value)
    {
      this.lineIdChoosen = event.target.value;
      if(event.target.value != 0){
     
-       
        this.boolic = true;
-       
-         this.SplitDepartures();
+       this.SplitDepartures();
      }
      else
      {
@@ -150,7 +138,7 @@ export class TimetableComponent implements OnInit {
      }
    }
    
- }
+  }
  
  SplitDepartures(){
  
@@ -158,17 +146,15 @@ export class TimetableComponent implements OnInit {
    
    this.allTimetables.forEach(element => {
      if(element.line == this.lineIdChoosen && element.dayType == this.dt)
-     {
+      {
        this.stringovi1= element.departures.split(";");
        this.stringovi1.splice(this.stringovi1.length-1,1);
-       
-     }
+      }
      
    });
  
    console.log(this.stringovi1);
    
+  }
  
- }
- 
- }
+}

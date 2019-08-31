@@ -79,18 +79,9 @@ this.auth.edit(fd).subscribe(data =>{
   window.alert("You successfully edited you account!");
   ProfileComponent.returned.next(false);
     this.router.navigate(['profile']);
-    console.log("WTFFFFFFFFF");
 }, err =>
 {
-  for(var key in err.error.ModelState)
-  {
-    for(var i = 0; i < err.error.ModelState[key].length; i++)
-    {
-        errorss.push(err.error.ModelState[key][i]);
-    }
-  }
-  console.log(errorss);
-  window.alert(errorss);
+  window.alert(err.error.message);
 } );
 
  }

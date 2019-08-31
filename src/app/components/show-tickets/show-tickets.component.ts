@@ -11,7 +11,7 @@ import { PricelistService } from 'src/app/services/pricelist/pricelist.service';
 export class ShowTicketsComponent implements OnInit {
 
   uniqueName : string = "";
-  prikazKarata : boolean = false;
+  prikazKarata : boolean = true;
   allTickets: any  = [];
   blaa: any = [];
   blaa1: any = [];
@@ -37,7 +37,7 @@ export class ShowTicketsComponent implements OnInit {
   }
 
   prikazi(){
-    this.prikazKarata = false;
+    this.prikazKarata = true;
     this.uniqueName = localStorage.getItem('name');
     if(this.uniqueName == "" || this.uniqueName == null)
     {
@@ -45,8 +45,13 @@ export class ShowTicketsComponent implements OnInit {
     }
     this.ticketServ.getAllTicketsForOneUser(this.uniqueName).subscribe(data => {
       this.allTickets = [];
-      this.prikazKarata = true;
+      //this.prikazKarata = true;
       this.allTickets = data;
+      if(this.allTickets == [] || this.allTickets == null || this.allTickets.length == 0){
+        this.prikazKarata  = false;
+      }else{
+        this.prikazKarata = true;
+      }
       this.ticketServ.getAllTicketTypes().subscribe(allTT => {
         this.allTTypes = allTT;
         

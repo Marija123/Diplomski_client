@@ -51,21 +51,6 @@ export class RegisterComponent implements OnInit {
      return this.registerForm.controls; 
   }
 
-
-  // credentials: TokenPayload = {
-  //   email: '',
-  //   name: '',
-  //   password: '',
-  //   surname: '',
-  //   address: '',
-  //   birthday: new Date(),
-  //   image: '',
-  //   activated: '',
-  //   role: 'AppUser',
-  //   passengerType: '',
-  //   img: null
-  // };
-
   
   constructor(private auth: AuthenticationService, private router: Router, private fb: FormBuilder, private accountService: AccountService )
   {
@@ -88,7 +73,7 @@ export class RegisterComponent implements OnInit {
     this.auth.register(foo).subscribe(() => {
       this.router.navigateByUrl('/login');
     }, (err) => {
-      console.error(err);
+      alert(err.error.message);
     });
   }
 

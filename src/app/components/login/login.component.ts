@@ -20,22 +20,12 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  // login() {
-  //   this.auth.login(this.credentials).subscribe(() => {
-  //     this.router.navigateByUrl('/profile');
-  //   }, (err) => {
-  //     console.error(err);
-  //   }); 
-  // }
 
   onSignIn(loginData: RegModel, form:NgForm){
-    //if(this.validations.validate(loginData)) return;
 
     let fd = new FormData();
     fd.append('email', loginData.Email);
     fd.append('password', loginData.Password);
-    // this.credentials.email = loginData.Email;
-    // this.credentials.password = loginData.Password;
     this.auth.login(fd).subscribe(
       res => {
 
@@ -46,26 +36,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('name', user.email);
         });
 
-        // console.log(res.access_token);
-
-        // let jwt = res.access_token;
-        // let jwtData = jwt.split('.')[1]
-        // let decodedJwtJasonData = window.atob(jwtData)
-        // let decodetJwtData = JSON.parse(decodedJwtJasonData)
-
-        // let rola = decodetJwtData.role
-
-        // // console.log('jwtData: ' + jwtData)
-        // // console.log('decodedJwtJsonData: ' + decodedJwtJasonData)
-        // // console.log(decodetJwtData)
-        // console.log('Role: ' + rola)
-        // let a = decodetJwtData.unique_name
-        // localStorage.setItem('jwt', jwt)
-        // localStorage.setItem('role', rola)
-        // console.log("iz storagea");
-        // console.log(localStorage.getItem('role'))
-        // localStorage.setItem('name',a);
-        // //window.location.href = "/home"
+   
         this.router.navigateByUrl('/home');
         
       },

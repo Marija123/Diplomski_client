@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-//import { PayPalConfig } from 'ngx-paypal'
 import { IPayPalConfig,ICreateOrderRequest } from 'ngx-paypal';
 import { Router } from '@angular/router';
 import { ShowTicketsComponent } from '../show-tickets/show-tickets.component';
@@ -74,16 +73,12 @@ export class BuyATicketComponent implements OnInit {
           }else {
             this.neregKupVremKartu = true;
           }
- 
 
         });
 
       });
     });
     
-
-    // this.initConfig();
-
    }
 
   ngOnInit() {
@@ -140,36 +135,30 @@ setradio(sel)
   }
 }
 
-  
+CalculateDiscount(){
+  this.ticketServ.getTypeUser(localStorage.getItem('name')).subscribe(data =>{
+    this.typeM = data;
+    this.discount =  this.typeM.coefficient * 100;
+    this.priceWDiscount = this.price - (this.price * this.typeM.coefficient) ;
+    this.boolZaPrikazCena = true;
+    this.initConfig();
+  });
+}
 
-  
-
-  CalculateDiscount(){
-    this.ticketServ.getTypeUser(localStorage.getItem('name')).subscribe(data =>{
-      this.typeM = data;
-      this.discount =  this.typeM.coefficient * 100;
-      this.priceWDiscount = this.price - (this.price * this.typeM.coefficient) ;
-      this.boolZaPrikazCena = true;
-      this.initConfig();
-    });
-  }
-
-  UpisiKartu(bb : boolean) {
+UpisiKartu(bb : boolean) {
 
 
-let payPalMod = new FormData();
-payPalMod.append("payementId", this.dobavljanjePayPal.id);
-let pom = new Date(this.dobavljanjePayPal.create_time);
-pom.setHours(pom.getHours() + 2);
-payPalMod.append("createTime",pom.toString());
-payPalMod.append("payerEmail",  this.dobavljanjePayPal.payer.email_address);
-payPalMod.append("payerName",this.dobavljanjePayPal.payer.name.given_name );
-payPalMod.append("payerSurname",this.dobavljanjePayPal.payer.name.surname );
-payPalMod.append("currencyCode",this.dobavljanjePayPal.purchase_units[0].amount.currency_code );
-payPalMod.append("value", this.dobavljanjePayPal.purchase_units[0].amount.value);
+  let payPalMod = new FormData();
+  payPalMod.append("payementId", this.dobavljanjePayPal.id);
+  let pom = new Date(this.dobavljanjePayPal.create_time);
+  pom.setHours(pom.getHours() + 2);
+  payPalMod.append("createTime",pom.toString());
+  payPalMod.append("payerEmail",  this.dobavljanjePayPal.payer.email_address);
+  payPalMod.append("payerName",this.dobavljanjePayPal.payer.name.given_name );
+  payPalMod.append("payerSurname",this.dobavljanjePayPal.payer.name.surname );
+  payPalMod.append("currencyCode",this.dobavljanjePayPal.purchase_units[0].amount.currency_code );
+  payPalMod.append("value", this.dobavljanjePayPal.purchase_units[0].amount.value);
 
-  
-    
     let b = new Date();
     b.setHours(b.getHours()+ 2);
 
@@ -208,12 +197,7 @@ payPalMod.append("value", this.dobavljanjePayPal.purchase_units[0].amount.value)
       payPalMod.append('user', this.user._id);
     }
  
-   
-
-
     this.ticketServ.buyTicket(payPalMod).subscribe(data => {
-
-     // if(!bb) { slanje mejla}
 
       window.alert("Ticket successfully bought!")
         this.router.navigate(['home']);
@@ -233,76 +217,6 @@ payPalMod.append("value", this.dobavljanjePayPal.purchase_units[0].amount.value)
     }
     form.reset();
   }
-
-//   upisiKartuNew()
-//   {
-
-//     let payPalMod = new FormData();
-// payPalMod.append("payementId", this.dobavljanjePayPal.id);
-// let pom = new Date(this.dobavljanjePayPal.create_time);
-// pom.setHours(pom.getHours() + 2);
-// payPalMod.append("createTime",pom.toString());
-// payPalMod.append("payerEmail",  this.dobavljanjePayPal.payer.email_address);
-// payPalMod.append("payerName",this.dobavljanjePayPal.payer.name.given_name );
-// payPalMod.append("payerSurname",this.dobavljanjePayPal.payer.name.surname );
-// payPalMod.append("currencyCode",this.dobavljanjePayPal.purchase_units[0].amount.currency_code );
-// payPalMod.append("value", this.dobavljanjePayPal.purchase_units[0].amount.value);
-
-
-
-//     let ticketMod = new TicketModel("",new Date(),0,"",0,0);
-//     let b = new Date();
-//     b.setHours(b.getHours()+ 2);
-//     ticketMod.PurchaseTime = new Date(b);
-    
-//     ticketMod.TicketTypeId = this.selecetTT;
-//     this.priceList.TicketPricess.forEach(element => {
-//       if(element.TicketTypeId == this.selecetTT)
-//       {
-//         ticketMod.TicketPricesId = element.Id;
-//       }
-//     });
-
-//     if(this.mailZaSlanje != "" && this.mailZaSlanje != undefined && this.mailZaSlanje != null){
-        
-//       ticketMod.Name = this.mailZaSlanje;
-//     }else{
-//       ticketMod.Name = this.korisceniEmail;
-//     }
-//     let tpom = new TicketPomModel(ticketMod, payPalMod.PayementId);
-//     this.ticketServ.addPayPal(payPalMod).subscribe(data => {
-//       this.ticketServ.addTicket(tpom).subscribe(data => {
-        
-        
-
-//           this.ticketServ.SendMail(ticketMod).subscribe(resp =>{
-//             if(resp == 'Ok'){
-//              window.alert("Ticket successfully bought!")
-//               this.router.navigateByUrl('/home');
-//             }
-//             else{
-//               alert("Something went wrong");
-//               this.router.navigateByUrl('/home');
-//             }
-//           });
-//         },
-//         err => {
-//           window.alert(err.error);
-//         });
-
-//         window.alert("Ticket successfully bought!")
-//         this.router.navigate(['home']);
-//       },
-//       err =>{
-//         window.alert(err.error)
-//         console.log(err);
-//       });
-      
-      
-//   }
-
-
-  
 
 
   private initConfig(): void {
@@ -356,9 +270,7 @@ payPalMod.append("value", this.dobavljanjePayPal.purchase_units[0].amount.value)
       
       onApprove: (data, actions) => {
           console.log('onApprove - transaction was approved, but not authorized', data, actions);
-          //actions.order.get().then(details => {
-            //  console.log('onApprove - you can get full order details inside onApprove: ', details);
-         // });
+         
 
       },
       onClientAuthorization: (data) => {

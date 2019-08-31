@@ -15,13 +15,6 @@ export class MenubarComponent implements OnInit {
 
   ngOnInit() {
   }
-  // loggedIn():string{
-  //   if(localStorage.jwt){
-   
-    
-  // }
-  //   return localStorage.jwt;
-  // }
 
   logout() {
     this.auth.logout();
@@ -33,6 +26,4 @@ export class MenubarComponent implements OnInit {
     return localStorage.getItem('role');
   }
 
-  
-  
 }

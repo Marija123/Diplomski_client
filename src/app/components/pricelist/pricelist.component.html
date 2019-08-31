@@ -1,5 +1,8 @@
 <div class="container" style="text-align: center; width:70% ;">
 
+  <div *ngIf="empty != ''">
+    <h2  style=" color: #d7dfde;">{{empty}}</h2>
+  </div>
   
     <div *ngIf="validPrices">
   
@@ -43,15 +46,5 @@
         </tbody>
       </table>
   
-      
-        <!-- <label>Hourly ticket:</label>
-        <label>{{validPrices.Hourly}}</label> <br/>
-        <label>Daily ticket:</label>
-        <label>{{validPrices.Daily}}</label> <br/>
-        <label>Monthly ticket:</label>
-        <label>{{validPrices.Monthly}}</label> <br/>
-        <label>Yearly ticket:</label>
-        <label>{{validPrices.Yearly}}</label> <br/> -->
-        
       </div>
     </div>

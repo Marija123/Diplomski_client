@@ -360,6 +360,7 @@ export class AddChangeLinesComponent implements OnInit {
           lineses.LineNumber= element.lineNumber;
           lineses.Id = element._id;
           lineses.Stations = this.findStations(element.stations);
+          lineses.Version = element.__v;
           this.linesWStations.push(lineses);
           
           lineses = new LineModel(0,"",[],"",0);

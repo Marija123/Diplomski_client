@@ -61,7 +61,6 @@ export class BusLocationComponent implements OnInit, OnDestroy {
         });
         
       });
-    //inicijalizacija polyline
     this.polyline = new Polyline([], 'blue', { url:"assets/busicon.png", scaledSize: {width: 50, height: 50}});
   
     this.stations = [];
@@ -74,7 +73,6 @@ export class BusLocationComponent implements OnInit, OnDestroy {
   findStations(e : any[]) : StationModel[]
   {
     let ret :StationModel[] = [];
-    //let statPom : StationModel = new StationModel()
       e.forEach(element => {
        ret.push(this.stati.find(x => x._id == element));
       });
@@ -100,15 +98,13 @@ export class BusLocationComponent implements OnInit, OnDestroy {
           this.ngZone.run(() => { 
           this.currentNumber = q;
           this.currNmr = q;
-      //console.log(this.currNmr);
 
            this.latitude = q[1];
           this.longitude = q[0];
           console.log("pos: ", this.latitude, this.longitude);
 
-     // this.chart.addPoint(q);
-    });
-    });
+          });
+        });
       }
     });
     
@@ -127,7 +123,6 @@ export class BusLocationComponent implements OnInit, OnDestroy {
     {
       this.getStationsByLineNumber(event.target.value);   
     
-     // this.notifForBL.StartTimer(); 
     }
     
   }

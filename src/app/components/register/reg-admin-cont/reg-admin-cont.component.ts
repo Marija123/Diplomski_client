@@ -57,13 +57,10 @@ export class RegAdminContComponent implements OnInit {
     passengerType: ''
   };
 
-//private notificationServ: NotificationService,
 
   constructor(private fb: FormBuilder, private accountService: AuthenticationService, private router: Router) { 
  
   }
-
-
 
   ngOnInit() {
   }
@@ -73,7 +70,7 @@ export class RegAdminContComponent implements OnInit {
     this.accountService.register(foo).subscribe(() => {
       this.router.navigateByUrl('/login');
     }, (err) => {
-      console.error(err);
+      alert(err.error.message);
     });
   }
 
@@ -92,39 +89,8 @@ export class RegAdminContComponent implements OnInit {
     fd.append('password', this.registerForm.value.Password);
     fd.append('activated', "PENDING");
 
-
-
-
-    // this.credentials.name = this.registerForm.value.Name;
-    // this.credentials.surname = this.registerForm.value.Surname;
-    // this.credentials.email = this.registerForm.value.Email;
-    // this.credentials.password = this.registerForm.value.Password;
-    // this.credentials.address = this.registerForm.value.Address;
-    // this.credentials.birthday = this.registerForm.value.Birthday;
-    // this.credentials.role = this.registerForm.value.Role;
-
-
-    // regModel.Activated  = "PENDING";
    
     this.register(fd);
-
-   
-    // this.accountService.register(regModel).subscribe(
-    //   ret => {
-    //     this.serverErrors = [];
-    //     this.notificationServ.sendNotification();
-    //     this.router.navigateByUrl('/signin');
-
-    //   },
-    //   err => {
-    //     console.log(err);
-    //     window.alert(err.error.ModelState[""]);
-    //     this.serverErrors = err.error.ModelState[""]
-
-    //   }
-    // );
-    
-   
 
     
   }
