@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TicketService } from 'src/app/services/ticket/ticket.service';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 @Component({
   selector: 'app-ticket-validation',
@@ -16,10 +17,15 @@ export class TicketValidationComponent implements OnInit {
   allTT: any ;
   myInput1: string = "";
   myInput : number ;
-  constructor(private ticketServ: TicketService) {
-    // this.ticketServ.getAllTicketTypes().subscribe(data => {
-    //   this.allTT = data;
-    // })
+  user : any;
+  prom : string = "PENDING";
+  constructor(private ticketServ: TicketService, private auth: AuthenticationService) {
+    this.auth.profile().subscribe(data => {
+              
+      this.user = data;    
+      this.prom = this.user.activated;
+      
+    });
    }
 
   ngOnInit() {
@@ -55,13 +61,11 @@ export class TicketValidationComponent implements OnInit {
                 this.ticketForV = null;
                 this.ticketMessageError = err.error.message;
               })
-              //this.ValidateTicketNoUser();
+              
             }
   
         }
-        // else{
-        //   this.ticketExists = "Ticket doesn't exist in database!"
-      // }
+        
       },
       err =>
       {
@@ -69,7 +73,6 @@ export class TicketValidationComponent implements OnInit {
         this.myInput = null;
         this.ticketForV = null;
         this.ticketExists = err.error;
-        //window.alert(err.error);
       });
     }
     
@@ -82,7 +85,6 @@ ValidateTicket(n:any)
   this.ticketMessage = "";
   this.ticketMessageError= "";
   
-  //let sl = new TicketTypeModel(n,this.ticketForV.Id);
   this.ticketServ.validateTicket(n, this.ticketForV).subscribe(data =>
     {
       
@@ -91,13 +93,7 @@ ValidateTicket(n:any)
       this.ticketForV = null;
       this.ticketRet = data;
       this.ticketMessage = data.message;
-      // if(this.ticketRet.Valid)
-      // {
-      //   this.ticketMessage = this.ticketRet.Message;
-      // }else
-      // {
-      //   this.ticketMessageError = this.ticketRet.Message;
-      // }
+    
       
     },
     err =>

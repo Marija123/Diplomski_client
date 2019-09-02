@@ -1,3 +1,5 @@
+
+<div *ngIf="prom == 'ACTIVATED'">
 <div style="align-items: center; ">
     <div class="container" style="text-align: center; width:70% ;">
       <br/>
@@ -12,7 +14,7 @@
       <br/>
   
       <span class="badge badge-danger" style="font-size: 22px; font-family: 'Gill Sans'" >{{ticketExists}}</span>
-      <!-- <label>{{ticketExists}}</label><br/> -->
+      
   
       <div *ngIf="ticketForV">
         <div *ngIf="ticketForV.user && ticketForV.user != ''">
@@ -29,6 +31,7 @@
       <span class="badge badge-success" style="font-size: 22px; font-family: 'Gill Sans'" >{{ticketMessage}}</span>
       <span class="badge badge-danger" style="font-size: 22px; font-family: 'Gill Sans'" >{{ticketMessageError}}</span>
   
-      <!-- <label>{{ticketMessage}}</label> -->
+      
     </div>
   </div>
+</div>
